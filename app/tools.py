@@ -6,10 +6,12 @@
 
 import json
 import random
+from datetime import datetime
 from functools import cache
 from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+LOG_DIR = DATA_DIR.parent / "learning_log"
 MAX_RESULTS = 3
 
 
@@ -98,3 +100,17 @@ def make_quiz(lecture: int) -> str:
         "answer": choice["definition"],
     }
     return json.dumps(out, ensure_ascii=False)
+
+
+def save_learning_log(content: str) -> str:
+    """利用者が学習内容の記録・保存を頼んだときに使う。
+    学習の記録を learning_log/ フォルダに保存する。
+    content には学んだ内容を Markdown で要約したものを格納する。
+    実行前にシステムが利用者へ確認するので、モデル側で確認を取らずにそのまま呼んでよい。
+    """
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    today = datetime.now().strftime("%Y-%m-%d")
+    path = LOG_DIR / f"{today}.md"
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(f"## {datetime.now():%H:%M}\n\n{content}\n\n")
+    return f"{path}に学習記録を保存しました。"
