@@ -193,16 +193,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="学習支援エージェントに質問する")
     parser.add_argument("question", nargs="?")
     parser.add_argument("--trace", action="store_true", help="ツール呼び出しを表示する")
-    parser.add_argument(
-        "--mcp",
-        action="store_true",
-        help="第5回: ツールを MCP サーバー（app/mcp_servers.json）から受け取る",
-    )
-    parser.add_argument(
-        "--list-tools",
-        action="store_true",
-        help="モデルに見えるツール一覧を表示して終了する（APIキー不要）",
-    )
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument(
         "--mcp",
